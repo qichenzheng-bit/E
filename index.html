@@ -25,7 +25,7 @@
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.btn{border:0;border-radius:13px;padding:12px 8px;font-size:14px;font-weight:900;text-align:center;text-decoration:none}.nav{background:#e9f5ff;color:#0b79c7}.arr{background:#173f5d;color:#fff}
 .shothead{display:flex;justify-content:space-between;font-weight:900;margin:12px 1px 8px}.count{font-size:12px;background:#fff1e2;color:#c66a16;border-radius:20px;padding:5px 9px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.slot{position:relative;min-height:118px;background:#f7fafc;border:1px solid #e2ebf0;border-radius:15px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;cursor:pointer}
-.slot input{display:none}.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.num{position:absolute;top:7px;left:7px;background:#173f5d;color:#fff;border-radius:8px;padding:4px 7px;font-size:11px;font-weight:900;z-index:2}.prompt{font-size:12px;line-height:1.35;color:#637c8d;padding-top:18px;z-index:2}
+.slot input{display:none}.slot:before{content:"相册 / 拍照";position:absolute;right:7px;top:7px;background:#ffffffdd;color:#0b79c7;border-radius:8px;padding:4px 7px;font-size:10px;font-weight:900;z-index:3}.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.num{position:absolute;top:7px;left:7px;background:#173f5d;color:#fff;border-radius:8px;padding:4px 7px;font-size:11px;font-weight:900;z-index:2}.prompt{font-size:12px;line-height:1.35;color:#637c8d;padding-top:18px;z-index:2}
 .slot.has:after{content:"";position:absolute;left:0;right:0;bottom:0;height:52%;background:linear-gradient(transparent,#000b)}.slot.has .prompt{position:absolute;left:7px;right:7px;bottom:7px;color:white;font-weight:800;text-align:left}
 .copybox{margin-top:14px;background:linear-gradient(135deg,#eff9ff,#fff8f2);border:1px solid #dcebf3;border-radius:17px;padding:13px}.ct{font-size:13px;font-weight:900;color:#0b79c7;margin-bottom:7px}.cap{white-space:pre-wrap;font-size:14px;line-height:1.65;color:#294c64}
 .copy{width:100%;border:0;border-radius:11px;background:#e7f5ff;color:#0b79c7;padding:11px;font-weight:900;margin-top:9px}.note{width:100%;border:1px solid #dfe9ee;border-radius:12px;min-height:66px;padding:10px;margin-top:10px;font:inherit}
@@ -227,10 +227,10 @@ function render(){
 }
 function card(x){
  let z=member()[x.i]||{},c=document.createElement("section");c.className="card"+(z.done?" done":"");c.id="s"+x.i;
- let slots=x.shots.map((p,j)=>`<label class="slot ${z.ps&&z.ps[j]?"has":""}" id="p${x.i}-${j}"><span class="num">照片 ${j+1}</span><input type="file" accept="image/*" capture="environment" onchange="photo(event,${x.i},${j})"><span class="prompt">${esc(p)}</span></label>`).join("");
+ let slots=x.shots.map((p,j)=>`<label class="slot ${z.ps&&z.ps[j]?"has":""}" id="p${x.i}-${j}"><span class="num">照片 ${j+1}</span><input type="file" accept="image/*" onchange="photo(event,${x.i},${j})"><span class="prompt">${esc(p)}</span></label>`).join("");
  c.innerHTML=`<div class="top"><div><div class="time">${x.time}</div><h2>${esc(x.name)}</h2><div class="tag">${esc(x.tag)}</div></div><span id="status${x.i}" class="status ${z.arrived?"ok":""}">${z.arrived?"已到达":"未到达"}</span></div>
  <div class="actions"><a class="btn nav" href="${nav(x.nav)}">🧭 导航到这里</a><button class="btn arr" onclick="arrive(${x.i})">📍 ${z.arrived?"已到达":"到达打卡"}</button></div>
- <div class="shothead"><span>📷 照片 1–10</span><span class="count" id="cnt${x.i}">${z.n||0}/10</span></div><div class="grid">${slots}</div>
+ <div class="shothead"><span>📷 照片 1–10 · 支持相册上传</span><span class="count" id="cnt${x.i}">${z.n||0}/10</span></div><div class="grid">${slots}</div>
  <div class="copybox"><div class="ct">✨ 推荐打卡文案</div><div class="cap">${esc(x.caption)}</div><button class="copy" onclick="copyCap(${x.i})">复制文案</button></div>
  <textarea class="note" placeholder="写一句你自己的现场感受……" onchange="note(${x.i},this.value)">${esc(z.note||"")}</textarea>
  <button class="donebtn ${z.done?"on":""}" onclick="toggleDone(${x.i})">${z.done?"✓ 本站已完成":"完成这一站 ✓"}</button>`;
